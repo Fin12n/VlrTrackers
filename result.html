@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT — Player Lookup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-mark">V</div>
+        <div class="logo-text">VALOR<span>ANT</span></div>
+    </header>
+
+    <main style="padding: 0;">
+        <!-- Result -->
+         <div id="result">
+            <!-- Profile -->
+            <div>
+                <div class="section-label"><span>Player Profile</span></div>
+                <div class="profile-card">
+                    <div class="bg-text" id="bg-text">Example</div>
+                    <div class="avatar-wrap">
+                        <div class="avatar-ring"></div>
+                        <div class="avatar-hex" id="avt-hex"></div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="name"><span class="profile-tag" id="tag"></span></div>
+                        <div class="profile-region">🌏 Asia Pacific· Level 32767</div>
+                        <div class="profile-puuid">PUUID: dfd47d2d-dedb-54cd-bd92-ac7ff286ab8</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank -->
+            <div>
+                <div class="section-label"><span>Ranked Stats</span></div>
+                <div class="rank-grid">
+                    <div class="rank-card">
+                        <div class="card-title">Current Rank</div>
+                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant">
+                        <!-- <div class="rank-tier-placeholder">🏆</div> -->
+                        <div class="rank-name">Radiant</div>
+                        <div class="rank-rr">9999</div>
+                        <div class="rank-elo">9999 Elo</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="card-title">Peak Rank</div>
+                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant">
+                        <!-- <div class="rank-tier-placeholder">🎖️</div> -->
+                        <div class="rank-name">Radiant</div>
+                        <div class="rank-rr">e1a1</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Matches -->
+            <div>
+                <div class="section-label"><span>Recent Matches</span></div>
+                <div class="match-list">None</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/result.js"></script>
+</body>
+
+</html>
