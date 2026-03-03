@@ -12,18 +12,25 @@
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/tracker.css">
 </head>
 
 <body>
 
     <header>
-        <div class="logo-mark">V</div>
-        <div class="logo-text">VALOR<span>ANT</span></div>
+            <div class="logo-mark">V</div>
+            <div class="logo-text">VALOR<span>ANT</span></div>
     </header>
 
     <main style="padding: 0;">
+        <!-- Loading -->
+        <div class="loading-spin" id="loading" style="display: flex;">
+            <div class="spinner"></div>
+            <div style="font-size: 20px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim);">Fetching Data...</div>
+        </div>
+
         <!-- Result -->
-         <div id="result">
+        <div id="result" style="">
             <!-- Profile -->
             <div>
                 <div class="section-label"><span>Player Profile</span></div>
@@ -31,15 +38,18 @@
                     <div class="bg-text" id="bg-text">Example</div>
                     <div class="avatar-wrap">
                         <div class="avatar-ring"></div>
-                        <div class="avatar-hex" id="avt-hex"></div>
+                        <div class="avatar-hex" id="avt-hex">
+                            <img id="profileIcon" src="https://placehold.co/400" alt="Placeholder Icon" class="avatar-img">
+                        </div>
                     </div>
                     <div class="profile-info">
-                        <div class="profile-name" id="name"><span class="profile-tag" id="tag"></span></div>
-                        <div class="profile-region">🌏 Asia Pacific· Level 32767</div>
-                        <div class="profile-puuid">PUUID: dfd47d2d-dedb-54cd-bd92-ac7ff286ab8</div>
+                        <div class="profile-name" id="name">Example<span class="profile-tag" id="tag">#Tag</span></div>
+                        <div class="profile-region" id="profile-region"><i class="fa-regular fa-earth-asia"></i> Asia Pacific· Level 32767</div>
+                        <div class="profile-puuid" id="profile-puuid">PUUID: dfd47d2d-dedb-54cd-bd92-ac7ff286ab8</div>
                     </div>
                 </div>
             </div>
+            <br />
 
             <!-- Rank -->
             <div>
@@ -47,34 +57,41 @@
                 <div class="rank-grid">
                     <div class="rank-card">
                         <div class="card-title">Current Rank</div>
-                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant">
+                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png"
+                            class="rank-tier-img" alt="Radiant">
                         <!-- <div class="rank-tier-placeholder">🏆</div> -->
                         <div class="rank-name">Radiant</div>
                         <div class="rank-rr">9999</div>
                         <div class="rank-elo">9999 Elo</div>
+                        <div class="rank-rr" id="rank-protection" style="color: white;">2 Protection Shield Remaining</div>
                     </div>
                     <div class="rank-card">
                         <div class="card-title">Peak Rank</div>
-                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant">
+                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png"
+                            class="rank-tier-img" alt="Radiant" id="img-peak">
                         <!-- <div class="rank-tier-placeholder">🎖️</div> -->
-                        <div class="rank-name">Radiant</div>
-                        <div class="rank-rr">e1a1</div>
+                        <div class="rank-name" id="peak-name">Radiant</div>
+                        <div class="rank-rr" id="peak-ss">e1a1</div>
                     </div>
                 </div>
             </div>
+            <br />
 
             <!-- Recent Matches -->
             <div>
                 <div class="section-label"><span>Recent Matches</span></div>
-                <div class="match-list">None</div>
+                <div class="recent-matches" id="matches"></div>
             </div>
+
+            <br/>
+            <br/>
+            <br/>
         </div>
     </main>
 
-    <footer>Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+    <footer> &nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
 
-    <script src="./js/main.js"></script>
-    <script src="./js/result.js"></script>
+    <script type="module" src="./js/result.js"></script>
 </body>
 
 </html>
