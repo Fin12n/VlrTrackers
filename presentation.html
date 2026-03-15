@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT Tracker — Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE VARIABLES & BASE --- */
+        :root {
+            --red: #ff4655;
+            --red-dim: #c0333f;
+            --bg-deep: #0a0f14;
+            --bg-mid: #0f1923;
+            --bg-card: #111c26;
+            --bg-card2: #0d1720;
+            --border: rgba(255, 70, 85, 0.2);
+            --border-light: rgba(255, 255, 255, 0.06);
+            --text: #ecf0f1;
+            --text-dim: rgba(236, 240, 241, 0.5);
+            --accent-cyan: #00d4ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-deep);
+            min-height: 100vh;
+            font-family: 'Barlow Condensed', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background Noise & Effects */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: ''; position: fixed; top: -40vh; right: -20vw; width: 70vw; height: 150vh;
+            background: linear-gradient(165deg, rgba(255, 70, 85, 0.06) 0%, transparent 60%);
+            transform: rotate(-8deg); pointer-events: none; z-index: 0;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: relative; z-index: 10; padding: 28px 40px 0;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .logo-mark {
+            width: 36px; height: 36px; background: var(--red);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+            display: grid; place-items: center;
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px;
+        }
+        .logo-text {
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 20px;
+            letter-spacing: 4px; text-transform: uppercase; color: white;
+        }
+        .logo-text span { color: var(--red); }
+
+        /* --- SLIDE SYSTEM --- */
+        main {
+            position: relative; z-index: 5; flex: 1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px 20px 100px; width: 100%; max-width: 1000px; margin: 0 auto;
+        }
+
+        .slide {
+            display: none; width: 100%; animation: slideIn 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .slide.active { display: block; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* --- UI COMPONENTS FROM YOUR CODE --- */
+        .hero-title { text-align: center; margin-bottom: 20px; }
+        .hero-title h1 {
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(36px, 6vw, 72px);
+            line-height: 0.95; text-transform: uppercase; letter-spacing: 6px;
+        }
+        .hero-title h1 .line-dim { color: rgba(255, 255, 255, 0.15); }
+        .hero-title h1 .line-main { color: white; }
+        .hero-title h1 .line-red { color: var(--red); }
+        .hero-title p { margin-top: 14px; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); }
+
+        .search-panel {
+            width: 100%; background: var(--bg-card); border: 1px solid var(--border);
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            padding: 40px; position: relative; margin: 0 auto;
+        }
+        .search-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--red), transparent);
+        }
+
+        .section-label { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .section-label span { font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+
+        .rank-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .rank-card {
+            background: var(--bg-card); border: 1px solid var(--border-light); padding: 24px;
+            position: relative; transition: border-color 0.2s, transform 0.2s;
+        }
+        .rank-card:hover { border-color: var(--border); transform: translateY(-5px); }
+        .rank-card::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 40%; background: var(--red); }
+        .rank-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 24px; text-transform: uppercase; }
+        
+        .profile-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+            padding: 28px 32px; display: flex; align-items: center; gap: 24px; position: relative;
+        }
+        .profile-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 36px; }
+        
+        .match-row {
+            background: var(--bg-card2); border: 1px solid var(--border-light); border-left: 3px solid #3fa96a;
+            padding: 14px 20px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 16px; margin-bottom: 10px;
+        }
+        .btn-submit {
+            background: var(--red); color: white; border: none; padding: 12px 30px;
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            transition: 0.2s;
+        }
+        .btn-submit:hover { background: #ff5e6a; transform: translateY(-2px); }
+
+        /* Slide Controls */
+        .controls {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 20px; z-index: 50; align-items: center;
+        }
+        .slide-counter { font-family: 'Share Tech Mono', monospace; color: var(--text-dim); font-size: 16px; }
+
+        .content-text { font-size: 20px; line-height: 1.6; color: var(--text); margin-bottom: 15px; }
+        .content-list { list-style: none; margin-left: 10px; }
+        .content-list li { margin-bottom: 15px; font-size: 18px; position: relative; padding-left: 20px; }
+        .content-list li::before { content: '>'; position: absolute; left: 0; color: var(--red); font-family: 'Share Tech Mono'; font-weight: bold; }
+
+        /* Flow Chart Styles for Architecture Slide */
+        .flow-box {
+            flex: 1; background: var(--bg-card2); border: 1px solid var(--border-light); 
+            padding: 20px; text-align: center; border-radius: 4px; position: relative;
+        }
+        .flow-arrow { display: grid; place-items: center; color: var(--red); font-size: 24px; padding: 0 10px; }
+        
+        /* Stats Grid Styles */
+        .stat-grid { display: flex; gap: 2px; background: var(--border-light); padding: 1px; margin-top: 15px; }
+        .stat-cell { flex: 1; background: var(--bg-card); padding: 20px; text-align: center; }
+        .stat-val { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 36px; line-height: 1; }
+        .stat-lbl { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text-dim); margin-top: 5px; }
+
+        /* Error Box Styles */
+        .error-box {
+            background: rgba(255, 70, 85, 0.08); border: 1px solid rgba(255, 70, 85, 0.3);
+            padding: 20px 24px; display: flex; align-items: center; gap: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-mark">V</div>
+    <div class="logo-text">VALOR<span>ANT</span></div>
+</header>
+
+<main>
+    <div class="slide active">
+        <div class="hero-title" style="margin-top: 10vh;">
+            <h1>
+                <div class="line-dim">PROJECT PITCH</div>
+                <div class="line-main">VALORANT</div>
+                <div class="line-red">TRACKER</div>
+            </h1>
+            <p>Hệ thống tra cứu thông tin & lịch sử đấu</p>
+            <br><br>
+            <div class="section-label" style="justify-content: center;"><span>Nhấn mũi tên hoặc click nút để tiếp tục</span></div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-red">01. GIỚI THIỆU</div></h1></div>
+        <div class="search-panel">
+            <div class="section-label"><span>Tổng quan dự án</span></div>
+            <p class="content-text">Valorant Tracker là một ứng dụng web Single-Page Application (SPA) cho phép người chơi tra cứu nhanh chóng dữ liệu tài khoản Riot Games của họ.</p>
+            <ul class="content-list">
+                <li>Giao diện thiết kế theo chuẩn UI/UX của In-game Valorant.</li>
+                <li>Tốc độ phản hồi cực nhanh, thao tác mượt mà không cần tải lại trang.</li>
+                <li>Hỗ trợ tra cứu tất cả người chơi ở mọi khu vực (AP, NA, EU, KR...).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-dim">02. VẤN ĐỀ</div></h1></div>
+        <div class="search-panel" style="border-color: rgba(255, 70, 85, 0.4);">
+            <div class="section-label"><span>Tại sao cần xây dựng Tracker riêng?</span></div>
+            <ul class="content-list">
+                <li>Client game Valorant khá nặng, mất thời gian khởi động chỉ để xem lịch sử đấu.</li>
+                <li>Hệ thống in-game không lưu lại quá nhiều trận đấu cũ (chỉ hiển thị 10-15 trận gần nhất).</li>
+                <li>Các Tracker bên thứ 3 (như Tracker.gg) bắt buộc người dùng đăng nhập tài khoản Riot hoặc hiển thị quá nhiều quảng cáo.</li>
+                <li>Khó khăn trong việc copy/chia sẻ thành tích (Rank, KDA) với bạn bè qua link.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-red">03. GIẢI PHÁP</div></h1></div>
+        <div class="rank-grid">
+            <div class="rank-card">
+                <div class="rank-name" style="color: var(--accent-cyan)"><i class="fa-solid fa-globe"></i> Web App</div>
+                <p style="margin-top:10px; color: var(--text-dim)">Truy cập mọi lúc, mọi nơi trên đa nền tảng. Không bắt buộc đăng nhập.</p>
+            </div>
+            <div class="rank-card">
+                <div class="rank-name" style="color: var(--red)"><i class="fa-solid fa-bolt"></i> API Tracking</div>
+                <p style="margin-top:10px; color: var(--text-dim)">Trích xuất thông số chính xác tới từng trận đấu, headshot rate, K/D.</p>
+            </div>
+            <div class="rank-card">
+                <div class="rank-name" style="color: #f5c518"><i class="fa-solid fa-link"></i> Shareable</div>
+                <p style="margin-top:10px; color: var(--text-dim)">Dễ dàng chia sẻ URL profile cho đồng đội và cộng đồng.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-main">04. CÔNG NGHỆ</div></h1></div>
+        <div class="search-panel">
+            <div class="section-label"><span>Tech Stack Sử Dụng</span></div>
+            <div class="rank-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="match-row" style="border-left-color: var(--red);">
+                    <div>
+                        <div style="font-weight:bold; font-size:18px;">HTML5 & CSS3</div>
+                        <div style="color: var(--text-dim); font-size: 14px;">Xây dựng Giao diện & Animation</div>
+                    </div>
+                </div>
+                <div class="match-row" style="border-left-color: var(--accent-cyan);">
+                    <div>
+                        <div style="font-weight:bold; font-size:18px;">Vanilla JS</div>
+                        <div style="color: var(--text-dim); font-size: 14px;">ES6 Modules & Fetch API</div>
+                    </div>
+                </div>
+                <div class="match-row" style="border-left-color: #f5c518; grid-column: span 2;">
+                    <div>
+                        <div style="font-weight:bold; font-size:18px;">HenrikDev API</div>
+                        <div style="color: var(--text-dim); font-size: 14px;">Unofficial Valorant API - Cung cấp dữ liệu Endpoint miễn phí</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-dim">05. KIẾN TRÚC HỆ THỐNG</div></h1></div>
+        <div class="search-panel">
+            <div class="section-label"><span>Data Flow (Luồng Dữ Liệu)</span></div>
+            <p class="content-text" style="font-size: 16px;">Mô hình Client - API Server hoạt động như thế nào?</p>
+            <br>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="flow-box">
+                    <i class="fa-solid fa-laptop-code fa-2x" style="color:var(--accent-cyan)"></i>
+                    <h3 style="margin-top:10px; font-family:'Rajdhani';">TRÌNH DUYỆT</h3>
+                    <p style="font-size:12px; color:var(--text-dim);">Gửi yêu cầu tên & tag</p>
+                </div>
+                <div class="flow-arrow"><i class="fa-solid fa-angles-right"></i></div>
+                <div class="flow-box">
+                    <i class="fa-solid fa-server fa-2x" style="color:#f5c518"></i>
+                    <h3 style="margin-top:10px; font-family:'Rajdhani';">HENRIK API</h3>
+                    <p style="font-size:12px; color:var(--text-dim);">Xử lý RESTful API</p>
+                </div>
+                <div class="flow-arrow"><i class="fa-solid fa-angles-right"></i></div>
+                <div class="flow-box">
+                    <i class="fa-solid fa-database fa-2x" style="color:var(--red)"></i>
+                    <h3 style="margin-top:10px; font-family:'Rajdhani';">RIOT GAMES</h3>
+                    <p style="font-size:12px; color:var(--text-dim);">Dữ liệu gốc (JSON)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-red">06. THIẾT KẾ UI/UX</div></h1></div>
+        <div class="search-panel">
+            <p class="content-text">Sử dụng ngôn ngữ thiết kế "Đậm chất Cyberpunk" của Valorant.</p>
+            <div style="display: flex; gap: 20px; margin-top: 20px;">
+                <div style="flex: 1; padding: 20px; background: var(--bg-deep); border: 1px solid var(--border-light);">
+                    <div class="section-label"><span>Màu Sắc Chủ Đạo</span></div>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="width:40px;height:40px; background:var(--red); border-radius:4px;" title="Red (#ff4655)"></div>
+                        <div style="width:40px;height:40px; background:var(--bg-card); border-radius:4px; border:1px solid var(--border-light);" title="Dark Navy (#111c26)"></div>
+                        <div style="width:40px;height:40px; background:var(--text); border-radius:4px;" title="Off White (#ecf0f1)"></div>
+                    </div>
+                </div>
+                <div style="flex: 1; padding: 20px; background: var(--bg-deep); border: 1px solid var(--border-light);">
+                    <div class="section-label"><span>Typography</span></div>
+                    <div style="font-family: 'Rajdhani'; font-size: 24px; font-weight: 700; letter-spacing: 2px;">RAJDHANI BOLD</div>
+                    <div style="font-family: 'Share Tech Mono'; font-size: 16px; color: var(--text-dim);">Share Tech Mono</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-main">07. TÍNH NĂNG CHÍNH</div></h1></div>
+        <div class="search-panel">
+            <div class="section-label"><span>Feature 1: Smart Search</span></div>
+            <p class="content-text">Hệ thống form nhập liệu tối ưu hóa với Tên hiển thị (Riot ID) và Tagline.</p>
+            <br>
+            <div style="display: flex; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 10px 16px; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <span style="color:var(--red); font-family:'Share Tech Mono';">@</span>
+                <span style="font-family:'Share Tech Mono'; color:#fff; flex:1;">Không Chơi Duelist</span>
+                <span style="color:var(--red); font-family:'Share Tech Mono';">#</span>
+                <span style="font-family:'Share Tech Mono'; color:var(--text-dim);">DList</span>
+            </div>
+            <div style="display: flex; background: rgba(0,0,0,0.3); border: 1px solid var(--border-light); padding: 10px 16px; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <span style="color:var(--red);"><i class="fa-solid fa-earth-asia"></i></span>
+                <span style="font-family:'Share Tech Mono'; color:#fff; flex:1;">Asia Pacific (AP)</span>
+            </div>
+            <button class="btn-submit" style="width: 100%;">TÌM KIẾM NGƯỜI CHƠI</button>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-dim">08. XỬ LÝ NGOẠI LỆ</div></h1></div>
+        <div class="search-panel" style="border-color: rgba(255, 70, 85, 0.4);">
+            <div class="section-label"><span>Error Handling & UI</span></div>
+            <p class="content-text">Hiển thị thông báo lỗi thân thiện khi API thất bại hoặc tìm sai tên người chơi.</p>
+            <br>
+            <div class="error-box">
+                <i class="fa-solid fa-triangle-exclamation" style="color: var(--red); font-size: 30px;"></i>
+                <div>
+                    <div style="color:var(--red); font-family:'Rajdhani'; font-weight:700; font-size: 20px; letter-spacing: 1px;">PLAYER NOT FOUND (404)</div>
+                    <div style="font-size:14px; color: var(--text-dim); font-family: 'Share Tech Mono';">Vui lòng kiểm tra lại Riot ID, Tagline hoặc Server Region.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-red">09. PROFILE & RANK</div></h1></div>
+        <div class="profile-card" style="width: 100%;">
+            <div style="width: 60px; height: 60px; background: var(--red); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: grid; place-items:center;">
+                <i class="fa-solid fa-user-ninja" style="color: white; font-size: 24px;"></i>
+            </div>
+            <div>
+                <div class="profile-name">Không Chơi Duelist <span style="color:var(--red)">#DList</span></div>
+                <div style="color: var(--text-dim); font-family: 'Share Tech Mono'; margin-top: 5px;">Level: 154 | Server: AP</div>
+            </div>
+            <div style="margin-left: auto; text-align: right;">
+                <div class="rank-name">Ascendant 3</div>
+                <div style="font-family: 'Share Tech Mono'; color: var(--red);">76 RR (Elo: 1540)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-main">10. THỐNG KÊ CHI TIẾT</div></h1></div>
+        <div class="search-panel" style="padding: 20px;">
+            <div class="section-label"><span>Feature 3: Advanced Stats Overview</span></div>
+            <p class="content-text" style="font-size: 16px;">Tính toán và hiển thị các chỉ số trung bình (Dựa trên 20 trận gần nhất).</p>
+            
+            <div class="stat-grid">
+                <div class="stat-cell">
+                    <div class="stat-val" style="color: var(--accent-cyan)">1.24</div>
+                    <div class="stat-lbl">K/D RATIO</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-val" style="color: white;">28.5%</div>
+                    <div class="stat-lbl">HEADSHOT %</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-val" style="color: #3fa96a;">65%</div>
+                    <div class="stat-lbl">WIN RATE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-dim">11. LỊCH SỬ ĐẤU</div></h1></div>
+        <div class="search-panel" style="padding: 20px;">
+            <div class="section-label"><span>Feature 4: Match History Feed</span></div>
+            <div class="match-row" style="border-left-color: #3fa96a;">
+                <div style="font-family: 'Rajdhani'; font-weight:bold; font-size:18px;">COMPETITIVE <br><span style="font-size:12px; color:var(--text-dim); font-weight:normal;">ASCENT</span></div>
+                <div style="font-family: 'Share Tech Mono';">KDA: 21 / 14 / 7</div>
+                <div style="color: #3fa96a; font-weight:bold; text-align: right;">VICTORY <br> <span style="font-size:12px; color:#fff">13 - 9</span></div>
+            </div>
+            <div class="match-row" style="border-left-color: var(--red);">
+                <div style="font-family: 'Rajdhani'; font-weight:bold; font-size:18px;">COMPETITIVE <br><span style="font-size:12px; color:var(--text-dim); font-weight:normal;">BIND</span></div>
+                <div style="font-family: 'Share Tech Mono';">KDA: 10 / 18 / 4</div>
+                <div style="color: var(--red); font-weight:bold; text-align: right;">DEFEAT <br> <span style="font-size:12px; color:#fff">7 - 13</span></div>
+            </div>
+            <div class="match-row" style="border-left-color: var(--text-dim);">
+                <div style="font-family: 'Rajdhani'; font-weight:bold; font-size:18px;">COMPETITIVE <br><span style="font-size:12px; color:var(--text-dim); font-weight:normal;">LOTUS</span></div>
+                <div style="font-family: 'Share Tech Mono';">KDA: 15 / 15 / 5</div>
+                <div style="color: var(--text-dim); font-weight:bold; text-align: right;">DRAW <br> <span style="font-size:12px; color:#fff">14 - 14</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-red">12. RESPONSIVE DESIGN</div></h1></div>
+        <div class="rank-grid">
+            <div class="rank-card" style="text-align: center;">
+                <i class="fa-solid fa-desktop" style="font-size: 60px; color: var(--text-dim); margin-bottom: 20px;"></i>
+                <div class="rank-name" style="font-size: 20px;">Trải nghiệm PC</div>
+                <p style="margin-top:10px; color: var(--text-dim); font-size: 14px;">Hiển thị đầy đủ dạng Grid, chia cột rõ ràng. Cung cấp tầm nhìn bao quát.</p>
+            </div>
+            <div class="rank-card" style="text-align: center;">
+                <i class="fa-solid fa-mobile-screen-button" style="font-size: 60px; color: var(--red); margin-bottom: 20px;"></i>
+                <div class="rank-name" style="font-size: 20px;">Tối ưu Mobile</div>
+                <p style="margin-top:10px; color: var(--text-dim); font-size: 14px;">Giao diện cuộn dọc (Stacking), thu gọn thông số phụ, tối ưu thao tác ngón tay.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title"><h1 style="font-size: 40px;"><div class="line-main">13. LỘ TRÌNH PHÁT TRIỂN</div></h1></div>
+        <div class="search-panel">
+            <div class="section-label"><span>Future Roadmap</span></div>
+            <ul class="content-list" style="margin-top: 20px;">
+                <li style="color: #3fa96a;">[Hoàn thành] Tìm kiếm người chơi & tra cứu Rank.</li>
+                <li style="color: #3fa96a;">[Hoàn thành] Hiển thị lịch sử 10 trận gần nhất.</li>
+                <li>[Sắp tới] Tích hợp chi tiết từng trận đấu (Bảng điểm từng ván).</li>
+                <li>[Sắp tới] Global Leaderboard - Bảng xếp hạng Radiant thế giới.</li>
+                <li>[Tương lai] Ứng dụng tra cứu Line-up chiến thuật (Sova, Viper...).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title">
+            <h1 style="font-size: 40px;"><div class="line-dim">14. LIVE DEMO</div></h1>
+            <p>Trải nghiệm thực tế sản phẩm</p>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <div style="display: inline-block; padding: 40px; border: 2px dashed var(--red); border-radius: 10px; background: rgba(255, 70, 85, 0.05);">
+                <i class="fa-solid fa-play" style="font-size: 50px; color: var(--red); margin-bottom: 20px; cursor: pointer;"></i>
+                <div style="font-family: 'Rajdhani'; font-size: 24px; font-weight: 700;">CHUYỂN SANG TAB TRÌNH DUYỆT</div>
+                <div style="font-family: 'Share Tech Mono'; color: var(--text-dim); margin-top: 10px;">(Hoặc click để mở liên kết dự án: <a href="https://fin12n.github.io/VlrTrackers" target="_blank">fin12n.github.io/VlrTrackers)</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="hero-title" style="margin-top: 15vh;">
+            <h1>
+                <div class="line-red">THANK</div>
+                <div class="line-main">YOU!</div>
+            </h1>
+            <p>Q&A - Phần hỏi đáp</p>
+        </div>
+    </div>
+</main>
+
+<div class="controls">
+    <button class="btn-submit" id="prevBtn" style="padding: 10px 20px;"><i class="fa-solid fa-chevron-left"></i> PREV</button>
+    <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">16</span></div>
+    <button class="btn-submit" id="nextBtn" style="padding: 10px 20px;">NEXT <i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentSlideText = document.getElementById('currentSlide');
+    const totalSlidesText = document.getElementById('totalSlides');
+    let currentIdx = 0;
+
+    // Cập nhật tổng số slide tự động
+    totalSlidesText.innerText = slides.length;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if(i === index) slide.classList.add('active');
+        });
+        currentSlideText.innerText = index + 1;
+        
+        // Cập nhật trạng thái nút
+        prevBtn.style.opacity = index === 0 ? '0.5' : '1';
+        prevBtn.style.pointerEvents = index === 0 ? 'none' : 'auto';
+        
+        nextBtn.style.opacity = index === slides.length - 1 ? '0.5' : '1';
+        nextBtn.style.pointerEvents = index === slides.length - 1 ? 'none' : 'auto';
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if(currentIdx > 0) { currentIdx--; showSlide(currentIdx); }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if(currentIdx < slides.length - 1) { currentIdx++; showSlide(currentIdx); }
+    });
+
+    // Hỗ trợ phím mũi tên bàn phím
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'ArrowRight' && currentIdx < slides.length - 1) { currentIdx++; showSlide(currentIdx); }
+        if(e.key === 'ArrowLeft' && currentIdx > 0) { currentIdx--; showSlide(currentIdx); }
+    });
+
+    // Init
+    showSlide(currentIdx);
+</script>
+
+</body>
+</html>
