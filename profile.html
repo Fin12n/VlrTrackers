@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT — My Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        main { align-items:center; padding:40px 20px 120px; gap:20px; }
+
+        .section-label { display:flex; align-items:center; gap:10px; width:100%; max-width:680px; }
+        .section-label span { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); }
+        .section-label::after { content:''; flex:1; height:1px; background:var(--border-light); }
+
+        /* ── Profile hero ── */
+        .profile-hero {
+            width:100%; max-width:680px;
+            background:var(--bg-card); border:1px solid var(--border);
+            clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));
+            padding:26px 28px; display:flex; align-items:center; gap:22px; position:relative; overflow:hidden;
+        }
+        .profile-hero::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--red),rgba(255,70,85,0.3),transparent); }
+
+        .avatar-wrap { position:relative; flex-shrink:0; }
+        .avatar-ring { position:absolute; inset:-5px; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); background:linear-gradient(135deg,var(--red),transparent 60%); z-index:0; }
+        .avatar-hex { position:relative; z-index:1; width:76px; height:76px; background:var(--bg-card2); clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:grid; place-items:center; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; color:var(--red); }
+
+        .profile-meta { flex:1; min-width:0; }
+        .profile-dn   { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; letter-spacing:2px; }
+        .profile-em   { font-family:'Share Tech Mono',monospace; font-size:12px; color:var(--text-dim); margin-top:4px; }
+        .profile-riot {
+            display:inline-flex; align-items:center; gap:6px; margin-top:8px;
+            background:rgba(255,70,85,0.1); border:1px solid rgba(255,70,85,0.25);
+            padding:3px 10px; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--red);
+        }
+        .profile-joined { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:8px; }
+
+        .btn-logout { background:rgba(255,70,85,0.1); border:1px solid var(--border); color:var(--red); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; padding:8px 16px; cursor:pointer; transition:background .2s,color .2s; flex-shrink:0; }
+        .btn-logout:hover { background:var(--red); color:white; }
+
+        /* ── Quick shortcuts ── */
+        .quick-bar { width:100%; max-width:680px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .quick-btn { background:var(--bg-card2); border:1px solid var(--border-light); display:flex; align-items:center; gap:14px; padding:16px 20px; text-decoration:none; transition:border-color .2s,background .2s; cursor:pointer; }
+        .quick-btn:hover { border-color:var(--border); background:var(--bg-card); }
+        .quick-btn i { color:var(--red); font-size:18px; width:20px; flex-shrink:0; }
+        .qb-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:white; }
+        .qb-sub   { font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); margin-top:2px; }
+
+        /* ── Edit panels ── */
+        .edit-panel { width:100%; max-width:680px; background:var(--bg-card); border:1px solid var(--border-light); padding:22px 26px; position:relative; }
+        .edit-panel::before { content:''; position:absolute; bottom:0; left:0; height:2px; width:40%; background:var(--red); }
+
+        .panel-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; letter-spacing:3px; text-transform:uppercase; color:white; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+        .panel-title i { color:var(--red); }
+
+        .field-group { display:flex; flex-direction:column; gap:12px; }
+        .field-row   { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .field-wrap { display:flex; align-items:center; gap:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); padding:0 16px; height:48px; transition:border-color .2s,box-shadow .2s; }
+        .field-wrap:focus-within { border-color:var(--red); box-shadow:0 0 0 1px rgba(255,70,85,0.2),inset 0 0 20px rgba(255,70,85,0.04); }
+        .field-wrap.valid   { border-color:var(--green); }
+        .field-wrap.invalid { border-color:var(--red); }
+        .field-icon  { color:var(--red); font-size:13px; width:16px; flex-shrink:0; }
+        .field-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); width:72px; flex-shrink:0; border-right:1px solid var(--border-light); padding-right:12px; }
+        .field-wrap input { flex:1; background:none; border:none; outline:none; color:white; font-family:'Share Tech Mono',monospace; font-size:13px; padding-left:12px; }
+        .field-wrap input::placeholder { color:rgba(255,255,255,0.2); }
+        .toggle-pw { background:none; border:none; outline:none; color:var(--text-dim); cursor:pointer; font-size:12px; padding:0; transition:color .2s; }
+        .toggle-pw:hover { color:var(--red); }
+
+        /* Strength */
+        .strength-wrap  { margin-top:-4px; }
+        .strength-bar   { display:none; gap:4px; margin-bottom:3px; }
+        .strength-seg   { flex:1; height:3px; background:var(--border-light); transition:background .3s; }
+        .strength-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+
+        .btn-save { margin-top:16px; height:44px; padding:0 28px; background:var(--red); border:none; color:white; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; letter-spacing:4px; text-transform:uppercase; cursor:pointer; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); transition:background .2s,transform .15s; position:relative; overflow:hidden; }
+        .btn-save::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%); pointer-events:none; }
+        .btn-save:hover  { background:#ff5e6a; transform:translateY(-1px); }
+        .btn-save:active { transform:translateY(0); }
+        .btn-save .btn-loader { display:none; }
+        .btn-save.loading .btn-text   { display:none; }
+        .btn-save.loading .btn-loader { display:inline-block; }
+
+        .notify { display:none; padding:10px 14px; margin-bottom:14px; font-size:12px; letter-spacing:1px; gap:10px; align-items:flex-start; }
+        .notify.error   { background:rgba(255,70,85,0.08); border:1px solid rgba(255,70,85,0.3); color:var(--red); display:flex; }
+        .notify.success { background:rgba(63,169,106,0.08); border:1px solid rgba(63,169,106,0.3); color:var(--green); display:flex; }
+
+        /* Danger */
+        .danger-panel { width:100%; max-width:680px; background:rgba(255,70,85,0.04); border:1px solid rgba(255,70,85,0.15); padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .danger-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--red); }
+        .danger-sub   { font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); margin-top:3px; }
+        .btn-delete { background:transparent; border:1px solid rgba(255,70,85,0.4); color:var(--red); font-family:'Rajdhani',sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; padding:8px 18px; cursor:pointer; transition:background .2s,color .2s; flex-shrink:0; }
+        .btn-delete:hover { background:var(--red); color:white; }
+
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .profile-hero { animation:fadeUp .4s ease both; }
+        .quick-bar    { animation:fadeUp .4s ease .05s both; }
+        .edit-panel   { animation:fadeUp .4s ease .1s both; }
+        .danger-panel { animation:fadeUp .4s ease .15s both; }
+
+        @media(max-width:640px){
+            .profile-hero { flex-direction:column; align-items:flex-start; gap:14px; clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px)); }
+            .btn-logout { width:100%; text-align:center; }
+            .quick-bar  { grid-template-columns:1fr; }
+            .field-row  { grid-template-columns:1fr; }
+            .danger-panel { flex-direction:column; align-items:flex-start; }
+            .field-label { display:none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="./index.html" style="text-decoration:none;display:contents;">
+        <div class="logo-mark">V</div>
+        <div class="logo-text">VALOR<span>ANT</span></div>
+    </a>
+</header>
+
+<nav class="navbar">
+    <a href="./index.html"   class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></a>
+    <a href="./profile.html" class="nav-link active"><i class="fa-regular fa-user"></i> <span>Profile</span></a>
+    <a href="./login.html"   class="nav-link nav-auth" id="nav-auth"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Sign In</span></a>
+</nav>
+
+<main>
+
+    <div class="section-label"><span>My Profile</span></div>
+
+    <!-- Hero -->
+    <div class="profile-hero">
+        <div class="avatar-wrap">
+            <div class="avatar-ring"></div>
+            <div class="avatar-hex" id="av-init">?</div>
+        </div>
+        <div class="profile-meta">
+            <div class="profile-dn"     id="p-dn">—</div>
+            <div class="profile-em"     id="p-em">—</div>
+            <div class="profile-riot"   id="p-riot" style="display:none;">
+                <i class="fa-solid fa-crosshairs"></i>
+                <span id="p-riot-val">—</span>
+            </div>
+            <div class="profile-joined" id="p-joined"></div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; Sign Out
+        </button>
+    </div>
+
+    <!-- Shortcuts -->
+    <div class="quick-bar">
+        <a class="quick-btn" href="./index.html">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <div><div class="qb-title">Player Lookup</div><div class="qb-sub">Search any Riot ID</div></div>
+        </a>
+        <a class="quick-btn" id="qb-my-stats" href="./index.html">
+            <i class="fa-solid fa-chart-line"></i>
+            <div><div class="qb-title">My Stats</div><div class="qb-sub">View your tracker page</div></div>
+        </a>
+    </div>
+
+    <!-- Edit profile -->
+    <div class="section-label"><span>Edit Profile</span></div>
+    <div class="edit-panel">
+        <div class="panel-title"><i class="fa-regular fa-pen-to-square"></i> Profile Info</div>
+        <div class="notify" id="n-profile"></div>
+        <div class="field-group">
+            <div class="field-row">
+                <div class="field-wrap">
+                    <span class="field-icon"><i class="fa-regular fa-user"></i></span>
+                    <span class="field-label">First</span>
+                    <input type="text" id="e-fname" placeholder="First name" spellcheck="false">
+                </div>
+                <div class="field-wrap">
+                    <span class="field-icon"><i class="fa-regular fa-user"></i></span>
+                    <span class="field-label">Last</span>
+                    <input type="text" id="e-lname" placeholder="Last name" spellcheck="false">
+                </div>
+            </div>
+            <div class="field-wrap">
+                <span class="field-icon"><i class="fa-solid fa-crosshairs"></i></span>
+                <span class="field-label">Riot ID</span>
+                <input type="text" id="e-riot" placeholder="PlayerName#TAG" spellcheck="false">
+            </div>
+        </div>
+        <button class="btn-save" id="btn-save-profile">
+            <span class="btn-text">Save Changes</span>
+            <span class="btn-loader"><span class="spinner"></span></span>
+        </button>
+    </div>
+
+    <!-- Change password -->
+    <div class="edit-panel">
+        <div class="panel-title"><i class="fa-solid fa-lock"></i> Change Password</div>
+        <div class="notify" id="n-pw"></div>
+        <div class="field-group">
+            <div class="field-wrap">
+                <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                <span class="field-label">Current</span>
+                <input type="password" id="pw-cur" placeholder="Current password">
+                <button class="toggle-pw" onclick="tgPw('pw-cur',this)"><i class="fa-regular fa-eye"></i></button>
+            </div>
+            <div class="field-wrap">
+                <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                <span class="field-label">New</span>
+                <input type="password" id="pw-new" placeholder="New password">
+                <button class="toggle-pw" onclick="tgPw('pw-new',this)"><i class="fa-regular fa-eye"></i></button>
+            </div>
+            <div class="strength-wrap">
+                <div class="strength-bar" id="ps-bar">
+                    <div class="strength-seg" id="ps1"></div><div class="strength-seg" id="ps2"></div>
+                    <div class="strength-seg" id="ps3"></div><div class="strength-seg" id="ps4"></div>
+                </div>
+                <div class="strength-label" id="ps-lbl"></div>
+            </div>
+            <div class="field-wrap">
+                <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                <span class="field-label">Confirm</span>
+                <input type="password" id="pw-conf" placeholder="Repeat new password">
+                <button class="toggle-pw" onclick="tgPw('pw-conf',this)"><i class="fa-regular fa-eye"></i></button>
+            </div>
+        </div>
+        <button class="btn-save" id="btn-save-pw">
+            <span class="btn-text">Update Password</span>
+            <span class="btn-loader"><span class="spinner"></span></span>
+        </button>
+    </div>
+
+    <!-- Danger -->
+    <div class="danger-panel">
+        <div>
+            <div class="danger-title"><i class="fa-solid fa-triangle-exclamation"></i> Delete Account</div>
+            <div class="danger-sub">Permanently removes your local account data</div>
+        </div>
+        <button class="btn-delete" id="btn-delete">Delete Account</button>
+    </div>
+
+</main>
+
+<footer>&nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+
+<script src="./js/navbar.js"></script>
+<script>
+    /* ── Session check ── */
+    const session = JSON.parse(localStorage.getItem('vt_session') || sessionStorage.getItem('vt_session') || 'null');
+    if (!session) { window.location.href = './login.html'; }
+
+    const getAccs = () => JSON.parse(localStorage.getItem('vt_accounts') || '{}');
+    const saveAccs = o => localStorage.setItem('vt_accounts', JSON.stringify(o));
+
+    /* ── Populate ── */
+    function refresh() {
+        const u  = getAccs()[session.email] || {};
+        const dn = u.displayName || session.displayName || '?';
+        document.getElementById('av-init').textContent = dn.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+        document.getElementById('p-dn').textContent   = dn;
+        document.getElementById('p-em').textContent   = session.email;
+
+        const riot = u.riotId || session.riotId || '';
+        if (riot) {
+            document.getElementById('p-riot-val').textContent = riot;
+            document.getElementById('p-riot').style.display  = 'inline-flex';
+        }
+        if (u.createdAt || session.createdAt) {
+            document.getElementById('p-joined').textContent =
+                'Joined ' + new Date(u.createdAt || session.createdAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+        }
+
+        document.getElementById('e-fname').value = u.firstName || dn.split(' ')[0] || '';
+        document.getElementById('e-lname').value = u.lastName  || dn.split(' ').slice(1).join(' ') || '';
+        document.getElementById('e-riot').value  = riot;
+
+        if (riot && riot.includes('#')) {
+            const [n,t] = riot.split('#');
+            document.getElementById('qb-my-stats').href =
+                `./tracker.html?name=${encodeURIComponent(n)}&tag=${encodeURIComponent(t)}&region=ap&platform=pc`;
+        }
+    }
+    refresh();
+
+    /* ── Logout ── */
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        localStorage.removeItem('vt_session');
+        sessionStorage.removeItem('vt_session');
+        window.location.href = './login.html';
+    });
+
+    /* ── Toggle pw ── */
+    function tgPw(id, btn) {
+        const inp=document.getElementById(id), icon=btn.querySelector('i'), h=inp.type==='password';
+        inp.type=h?'text':'password'; icon.className=h?'fa-regular fa-eye-slash':'fa-regular fa-eye';
+    }
+
+    /* ── Notify ── */
+    function showN(id,type,msg){ const el=document.getElementById(id); el.className=`notify ${type}`; el.innerHTML=`<i class="fa-solid ${type==='error'?'fa-triangle-exclamation':'fa-circle-check'}"></i><span>${msg}</span>`; el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+
+    /* ── Save profile ── */
+    document.getElementById('btn-save-profile').addEventListener('click', () => {
+        const fname=document.getElementById('e-fname').value.trim();
+        const lname=document.getElementById('e-lname').value.trim();
+        const riot =document.getElementById('e-riot').value.trim();
+        if(!fname||!lname){ showN('n-profile','error','Name cannot be empty.'); return; }
+
+        const btn=document.getElementById('btn-save-profile');
+        btn.classList.add('loading'); btn.disabled=true;
+        setTimeout(()=>{
+            const accs=getAccs();
+            if(accs[session.email]){
+                accs[session.email].displayName=`${fname} ${lname}`;
+                accs[session.email].firstName=fname; accs[session.email].lastName=lname;
+                accs[session.email].riotId=riot;
+                saveAccs(accs);
+                session.displayName=`${fname} ${lname}`; session.riotId=riot;
+                const st=localStorage.getItem('vt_session')?localStorage:sessionStorage;
+                st.setItem('vt_session',JSON.stringify(session));
+                refresh();
+                showN('n-profile','success','Profile updated successfully.');
+            }
+            btn.classList.remove('loading'); btn.disabled=false;
+        },500);
+    });
+
+    /* ── Strength ── */
+    const psSegs=[1,2,3,4].map(i=>document.getElementById(`ps${i}`));
+    const C=['','#ff4655','#f5c518','#00d4ff','#3fa96a'],L=['','WEAK','FAIR','GOOD','STRONG'];
+    function calcS(pw){ let s=0; if(pw.length>=8)s++; if(/[A-Z]/.test(pw))s++; if(/[0-9]/.test(pw))s++; if(/[^A-Za-z0-9]/.test(pw))s++; return s; }
+    document.getElementById('pw-new').addEventListener('input',()=>{
+        const pw=document.getElementById('pw-new').value, bar=document.getElementById('ps-bar'), lbl=document.getElementById('ps-lbl');
+        if(!pw){bar.style.display='none';lbl.textContent='';return;}
+        bar.style.display='flex'; const s=calcS(pw);
+        psSegs.forEach((seg,i)=>{ seg.style.background=i<s?C[s]:'var(--border-light)'; });
+        lbl.textContent=L[s]; lbl.style.color=C[s];
+    });
+
+    /* ── Change password ── */
+    document.getElementById('btn-save-pw').addEventListener('click', () => {
+        const cur =document.getElementById('pw-cur').value;
+        const nw  =document.getElementById('pw-new').value;
+        const conf=document.getElementById('pw-conf').value;
+        const accs=getAccs(), u=accs[session.email];
+        if(!u)                          { showN('n-pw','error','Account not found.'); return; }
+        if(u.password!==btoa(cur))      { showN('n-pw','error','Current password is incorrect.'); return; }
+        if(calcS(nw)<2)                 { showN('n-pw','error','New password is too weak.'); return; }
+        if(nw!==conf)                   { showN('n-pw','error','Passwords do not match.'); return; }
+        if(btoa(nw)===u.password)       { showN('n-pw','error','New password must differ from current.'); return; }
+
+        const btn=document.getElementById('btn-save-pw');
+        btn.classList.add('loading'); btn.disabled=true;
+        setTimeout(()=>{
+            accs[session.email].password=btoa(nw); saveAccs(accs);
+            ['pw-cur','pw-new','pw-conf'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('ps-bar').style.display='none';
+            document.getElementById('ps-lbl').textContent='';
+            showN('n-pw','success','Password updated successfully.');
+            btn.classList.remove('loading'); btn.disabled=false;
+        },500);
+    });
+
+    /* ── Delete account ── */
+    document.getElementById('btn-delete').addEventListener('click', () => {
+        if(!confirm(`Delete account for ${session.email}?\nThis cannot be undone.`)) return;
+        const accs=getAccs(); delete accs[session.email]; saveAccs(accs);
+        localStorage.removeItem('vt_session'); sessionStorage.removeItem('vt_session');
+        window.location.href='./sign-up.html';
+    });
+</script>
+</body>
+</html>

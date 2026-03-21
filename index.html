@@ -6,7 +6,7 @@
     <title>VALORANT — Player Lookup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/home.css">
@@ -14,9 +14,17 @@
 <body>
 
 <header>
-    <div class="logo-mark">V</div>
-    <div class="logo-text">VALOR<span>ANT</span></div>
+    <a href="./index.html" style="text-decoration:none;display:contents;">
+        <div class="logo-mark">V</div>
+        <div class="logo-text">VALOR<span>ANT</span></div>
+    </a>
 </header>
+
+<nav class="navbar">
+    <a href="./index.html"   class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></a>
+    <a href="./profile.html" class="nav-link"><i class="fa-regular fa-user"></i> <span>Profile</span></a>
+    <a href="./login.html"   class="nav-link nav-auth" id="nav-auth"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Sign In</span></a>
+</nav>
 
 <main>
     <!-- Hero -->
@@ -26,58 +34,76 @@
             <div class="line-main">PLAYER</div>
             <div class="line-red">STATS</div>
         </h1>
-        <p>Enter your Riot ID to view profile & rank</p>
+        <p>Enter your Riot ID to view profile &amp; rank</p>
     </div>
 
     <!-- Search Panel -->
     <div class="search-panel">
-        <div class="input-group">
-            <div class="field-wrap">
-                <span class="field-icon">@</span>
-                <span class="field-label">Name</span>
-                <input type="text" id="riot-name" placeholder="Không Chơi Duelist" autocomplete="off" spellcheck="false">
+        <div id="by-nametag">
+            <div class="input-group">
+                <div class="field-wrap">
+                    <span class="field-icon">@</span>
+                    <span class="field-label">Name</span>
+                    <input type="text" id="riot-name" placeholder="Không Chơi Duelist" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="field-wrap">
+                    <span class="field-icon">#</span>
+                    <span class="field-label">Tag</span>
+                    <input type="text" id="riot-tag" placeholder="DList" autocomplete="off" spellcheck="false">
+                </div>
             </div>
             <div class="field-wrap">
-                <span class="field-icon">#</span>
-                <span class="field-label">Tag</span>
-                <input type="text" id="riot-tag" placeholder="DList" autocomplete="off" spellcheck="false">
+                <span class="field-icon"><i class="fa-solid fa-earth-asia"></i></span>
+                <span class="field-label">Region</span>
+                <select name="region" id="region" class="selector">
+                    <option value="ap">Asia Pacific</option>
+                    <option value="na">North America</option>
+                    <option value="eu">Europe</option>
+                    <option value="kr">Korea</option>
+                    <option value="latam">Latin America</option>
+                    <option value="br">Brazil</option>
+                </select>
+            </div>
+            <br>
+            <div class="field-wrap">
+                <span class="field-icon"><i class="fa-solid fa-desktop"></i></span>
+                <span class="field-label">Platform</span>
+                <select name="platform" id="platform" class="selector">
+                    <option value="pc">PC</option>
+                    <option value="console">Console</option>
+                </select>
             </div>
         </div>
-        <div class="field-wrap">
-            <span class="field-icon"><i class="fa-solid fa-earth-asia"></i></span>
-            <span class="field-label">Region </span>
-            <select name="region" id="region" class="selector">
-                <option value="ap">Asia Pacific</option>
-                <option value="na">North America</option>
-                <option value="eu">Europe</option>
-                <option value="kr">Korea</option>
-                <option value="latam">Latin America</option>
-                <option value="br">Brazil</option>
-            </select>
-        </div>
-        <br/>
-        <div class="field-wrap">
-            <span class="field-icon"><i class="fa-solid fa-desktop"></i></span>
-            <span class="field-label">Platform</span>
-            <select name="platform" id="platform" class="selector">
-                <option value="pc">PC</option>
-                <option value="console">Console</option>
-            </select>
-        </div>
-        <br/>
+
+        <br>
         <button class="btn-submit" id="submit">
+            <span class="btn-text">Get Player Info</span>
+            <span class="btn-loader"><span class="spinner"></span></span>
+        </button>
+
+        <br>
+        <h1 style="display:flex;justify-content:center;"><div class="line-main">Or</div></h1>
+        <br>
+
+        <div class="field-wrap">
+            <span class="field-icon"><i class="fa-regular fa-user"></i></span>
+            <span class="field-label">PUUID</span>
+            <input type="text" id="puuid-input" placeholder="54942ced-1967-5f66-8a16-1e0dae875641" autocomplete="off" spellcheck="false">
+        </div>
+
+        <br>
+        <button class="btn-submit" id="puuid-submit">
             <span class="btn-text">Get Player Info</span>
             <span class="btn-loader"><span class="spinner"></span></span>
         </button>
     </div>
 
-    <div id="notifyEl">
-
-    </div>
+    <div id="notifyEl"></div>
 </main>
 
-<footer> &nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp; </footer>
+<footer>&nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
 
+<script src="./js/navbar.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>

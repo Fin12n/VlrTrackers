@@ -1,97 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VALORANT — Player Lookup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/tracker.css">
 </head>
-
 <body>
 
-    <header>
-            <div class="logo-mark">V</div>
-            <div class="logo-text">VALOR<span>ANT</span></div>
-    </header>
+<header>
+    <a href="./index.html" style="text-decoration:none;display:contents;">
+        <div class="logo-mark">V</div>
+        <div class="logo-text">VALOR<span>ANT</span></div>
+    </a>
+</header>
 
-    <main style="padding: 0;">
-        <!-- Loading -->
-        <div class="loading-spin" id="loading" style="display: flex;">
-            <div class="spinner"></div>
-            <div style="font-size: 20px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim);">Fetching Data...</div>
-        </div>
+<nav class="navbar">
+    <a href="./index.html"   class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></a>
+    <a href="./profile.html" class="nav-link"><i class="fa-regular fa-user"></i> <span>Profile</span></a>
+    <a href="./login.html"   class="nav-link nav-auth" id="nav-auth"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Sign In</span></a>
+</nav>
 
-        <!-- Result -->
-        <div id="result" style="display: none;">
-            <!-- Profile -->
-            <div>
-                <div class="section-label"><span>Player Profile</span></div>
-                <div class="profile-card">
-                    <div class="bg-text" id="bg-text">Example</div>
-                    <div class="avatar-wrap">
-                        <div class="avatar-ring"></div>
-                        <div class="avatar-hex" id="avt-hex">
-                            <img id="profileIcon" src="https://placehold.co/400" alt="Placeholder Icon" class="avatar-img">
-                        </div>
-                    </div>
-                    <div class="profile-info">
-                        <div class="profile-name" id="name">Example<span class="profile-tag" id="tag">#Tag</span></div>
-                        <div class="profile-region" id="profile-region"><i class="fa-regular fa-earth-asia"></i> Asia Pacific· Level 32767</div>
-                        <div class="profile-puuid" id="profile-puuid">PUUID: dfd47d2d-dedb-54cd-bd92-ac7ff286ab8</div>
-                    </div>
-                </div>
-            </div>
-            <br />
+<main style="padding: 0;">
+    <!-- Loading -->
+    <div class="loading-spin" id="loading" style="display: flex;">
+        <div class="spinner"></div>
+        <div style="font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);">Fetching Data...</div>
+    </div>
 
-            <!-- Rank -->
-            <div>
-                <div class="section-label"><span>Ranked Stats</span></div>
-                <div class="rank-grid">
-                    <div class="rank-card">
-                        <div class="card-title">Current Rank</div>
-                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png"
-                            class="rank-tier-img" alt="Radiant">
-                        <!-- <div class="rank-tier-placeholder">🏆</div> -->
-                        <div class="rank-name">Radiant</div>
-                        <div class="rank-rr">9999</div>
-                        <div class="rank-elo">9999 Elo</div>
-                        <div class="rank-rr" id="rank-protection" style="color: white;">2 Protection Shield Remaining</div>
-                    </div>
-                    <div class="rank-card">
-                        <div class="card-title">Peak Rank</div>
-                        <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png"
-                            class="rank-tier-img" alt="Radiant" id="img-peak">
-                        <!-- <div class="rank-tier-placeholder">🎖️</div> -->
-                        <div class="rank-name" id="peak-name">Radiant</div>
-                        <div class="rank-rr" id="peak-ss">e1a1</div>
+    <!-- Result -->
+    <div id="result" style="display: none;">
+        <!-- Profile -->
+        <div>
+            <div class="section-label"><span>Player Profile</span></div>
+            <div class="profile-card">
+                <div class="bg-text" id="bg-text">Example</div>
+                <div class="avatar-wrap">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-hex" id="avt-hex">
+                        <img id="profileIcon" src="https://placehold.co/400" alt="Placeholder Icon" class="avatar-img">
                     </div>
                 </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="name">Example<span class="profile-tag" id="tag">#Tag</span></div>
+                    <div class="profile-region" id="profile-region"><i class="fa-regular fa-earth-asia"></i> Asia Pacific · Level 32767</div>
+                    <div class="profile-puuid" id="profile-puuid">PUUID: dfd47d2d-dedb-54cd-bd92-ac7ff286ab8</div>
+                </div>
             </div>
-            <br />
-
-            <!-- Recent Matches -->
-            <div>
-                <div class="section-label"><span>Recent Matches</span></div>
-                <div class="recent-matches" id="matches"></div>
-            </div>
-
-            <br/>
-            <br/>
-            <br/>
         </div>
-    </main>
+        <br>
 
-    <footer> &nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+        <!-- Rank -->
+        <div>
+            <div class="section-label"><span>Ranked Stats</span></div>
+            <div class="rank-grid">
+                <div class="rank-card">
+                    <div class="card-title">Current Rank</div>
+                    <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant">
+                    <div class="rank-name">Radiant</div>
+                    <div class="rank-rr">9999</div>
+                    <div class="rank-elo">9999 Elo</div>
+                    <div class="rank-rr" id="rank-protection" style="color:white;">2 Protection Shield Remaining</div>
+                </div>
+                <div class="rank-card">
+                    <div class="card-title">Peak Rank</div>
+                    <img src="https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png" class="rank-tier-img" alt="Radiant" id="img-peak">
+                    <div class="rank-name" id="peak-name">Radiant</div>
+                    <div class="rank-rr" id="peak-ss">e1a1</div>
+                </div>
+            </div>
+        </div>
+        <br>
 
-    <script type="module" src="./js/result.js"></script>
+        <!-- Recent Matches -->
+        <div>
+            <div class="section-label"><span>Recent Matches</span></div>
+            <div class="recent-matches" id="matches"></div>
+        </div>
+
+        <br><br><br>
+    </div>
+</main>
+
+<footer>&nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+
+<script src="./js/navbar.js"></script>
+<script type="module" src="./js/result.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT — Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        main { justify-content:center; padding:48px 20px 100px; gap:28px; }
+
+        .auth-title { text-align:center; }
+        .auth-title h1 { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:clamp(28px,5vw,56px); line-height:0.95; text-transform:uppercase; letter-spacing:6px; }
+        .auth-title .line-dim  { color:rgba(255,255,255,0.15); }
+        .auth-title .line-main { color:white; }
+        .auth-title .line-red  { color:var(--red); }
+        .auth-title p { margin-top:10px; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); }
+
+        .auth-card { width:100%; max-width:500px; background:var(--bg-card); border:1px solid var(--border); clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px)); padding:32px 32px 28px; position:relative; }
+        .auth-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--red),rgba(255,70,85,0.3),transparent); }
+
+        .form-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; letter-spacing:3px; text-transform:uppercase; color:white; }
+        .form-sub   { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:4px; margin-bottom:24px; }
+
+        .field-group { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+        .field-row   { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+        .field-wrap { display:flex; align-items:center; gap:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); padding:0 16px; height:50px; transition:border-color .2s,box-shadow .2s; }
+        .field-wrap:focus-within { border-color:var(--red); box-shadow:0 0 0 1px rgba(255,70,85,0.2),inset 0 0 20px rgba(255,70,85,0.04); }
+        .field-wrap.valid   { border-color:var(--green); }
+        .field-wrap.invalid { border-color:var(--red); box-shadow:0 0 0 1px rgba(255,70,85,0.25); }
+        .field-icon  { color:var(--red); font-size:13px; width:16px; flex-shrink:0; }
+        .field-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); width:72px; flex-shrink:0; border-right:1px solid var(--border-light); padding-right:12px; }
+        .field-wrap input { flex:1; background:none; border:none; outline:none; color:white; font-family:'Share Tech Mono',monospace; font-size:13px; padding-left:12px; }
+        .field-wrap input::placeholder { color:rgba(255,255,255,0.2); }
+        .toggle-pw { background:none; border:none; outline:none; color:var(--text-dim); cursor:pointer; font-size:13px; padding:0; transition:color .2s; }
+        .toggle-pw:hover { color:var(--red); }
+
+        /* Strength */
+        .strength-wrap  { margin-top:-4px; }
+        .strength-bar   { display:none; gap:4px; margin-bottom:3px; }
+        .strength-seg   { flex:1; height:3px; background:var(--border-light); transition:background .3s; }
+        .strength-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+
+        /* Terms */
+        .terms-wrap { display:flex; align-items:flex-start; gap:10px; margin-bottom:20px; cursor:pointer; user-select:none; }
+        .terms-wrap input[type="checkbox"] { appearance:none; -webkit-appearance:none; width:14px; height:14px; flex-shrink:0; margin-top:2px; border:1px solid var(--border-light); background:rgba(0,0,0,0.3); cursor:pointer; transition:background .2s,border-color .2s; position:relative; }
+        .terms-wrap input:checked { background:var(--red); border-color:var(--red); }
+        .terms-wrap input:checked::after { content:''; position:absolute; top:1px; left:3px; width:4px; height:8px; border:2px solid white; border-top:none; border-left:none; transform:rotate(45deg); }
+        .terms-text { font-size:11px; letter-spacing:1px; line-height:1.6; color:var(--text-dim); }
+
+        .btn-submit { width:100%; height:48px; background:var(--red); border:none; color:white; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; letter-spacing:4px; text-transform:uppercase; cursor:pointer; clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); transition:background .2s,transform .15s; position:relative; overflow:hidden; }
+        .btn-submit::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%); pointer-events:none; }
+        .btn-submit:hover  { background:#ff5e6a; transform:translateY(-1px); }
+        .btn-submit:active { transform:translateY(0); }
+        .btn-submit .btn-loader { display:none; }
+        .btn-submit.loading .btn-text   { display:none; }
+        .btn-submit.loading .btn-loader { display:inline-block; }
+
+        .notify { display:none; padding:12px 16px; margin-bottom:16px; font-size:12px; letter-spacing:1px; gap:10px; align-items:flex-start; }
+        .notify.error   { background:rgba(255,70,85,0.08); border:1px solid rgba(255,70,85,0.3); color:var(--red); display:flex; }
+        .notify.success { background:rgba(63,169,106,0.08); border:1px solid rgba(63,169,106,0.3); color:var(--green); display:flex; }
+
+        .divider { display:flex; align-items:center; gap:14px; margin:20px 0 14px; }
+        .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border-light); }
+
+        .auth-switch { text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); }
+        .auth-switch a { color:var(--red); text-decoration:none; }
+        .auth-switch a:hover { color:#ff7a85; }
+
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+        .auth-title { animation:fadeUp .4s ease both; }
+        .auth-card  { animation:fadeUp .4s ease .08s both; }
+
+        @media(max-width:540px){ .auth-card{padding:24px 18px 20px;} .field-row{grid-template-columns:1fr;} .field-label{display:none;} }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="./index.html" style="text-decoration:none;display:contents;">
+        <div class="logo-mark">V</div>
+        <div class="logo-text">VALOR<span>ANT</span></div>
+    </a>
+</header>
+
+<nav class="navbar">
+    <a href="./index.html"   class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></a>
+    <a href="./profile.html" class="nav-link"><i class="fa-regular fa-user"></i> <span>Profile</span></a>
+    <a href="./login.html"   class="nav-link nav-auth" id="nav-auth"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Sign In</span></a>
+</nav>
+
+<main>
+    <div class="auth-title">
+        <h1>
+            <div class="line-dim">CREATE</div>
+            <div class="line-main">YOUR</div>
+            <div class="line-red">ACCOUNT</div>
+        </h1>
+        <p>Join the tracker and monitor your stats</p>
+    </div>
+
+    <div class="auth-card">
+        <div class="form-title">New Agent</div>
+        <div class="form-sub">Fill in your details below</div>
+
+        <div class="notify" id="notify"></div>
+
+        <div class="field-group">
+            <div class="field-row">
+                <div class="field-wrap" id="fw-fname">
+                    <span class="field-icon"><i class="fa-regular fa-user"></i></span>
+                    <span class="field-label">First</span>
+                    <input type="text" id="fname" placeholder="John" autocomplete="given-name" spellcheck="false">
+                </div>
+                <div class="field-wrap" id="fw-lname">
+                    <span class="field-icon"><i class="fa-regular fa-user"></i></span>
+                    <span class="field-label">Last</span>
+                    <input type="text" id="lname" placeholder="Doe" autocomplete="family-name" spellcheck="false">
+                </div>
+            </div>
+            <div class="field-wrap" id="fw-email">
+                <span class="field-icon"><i class="fa-regular fa-envelope"></i></span>
+                <span class="field-label">Email</span>
+                <input type="email" id="email" placeholder="agent@valorant.gg" autocomplete="email" spellcheck="false">
+            </div>
+            <div class="field-wrap" id="fw-riot">
+                <span class="field-icon"><i class="fa-solid fa-crosshairs"></i></span>
+                <span class="field-label">Riot ID</span>
+                <input type="text" id="riot-id" placeholder="PlayerName#TAG (optional)" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field-wrap" id="fw-pw">
+                <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                <span class="field-label">Password</span>
+                <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password">
+                <button class="toggle-pw" type="button" id="toggle-pw"><i class="fa-regular fa-eye" id="eye-icon"></i></button>
+            </div>
+            <div class="strength-wrap">
+                <div class="strength-bar" id="str-bar">
+                    <div class="strength-seg" id="s1"></div><div class="strength-seg" id="s2"></div>
+                    <div class="strength-seg" id="s3"></div><div class="strength-seg" id="s4"></div>
+                </div>
+                <div class="strength-label" id="str-lbl"></div>
+            </div>
+            <div class="field-wrap" id="fw-cpw">
+                <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                <span class="field-label">Confirm</span>
+                <input type="password" id="confirm-pw" placeholder="Repeat password" autocomplete="new-password">
+            </div>
+        </div>
+
+        <label class="terms-wrap">
+            <input type="checkbox" id="terms">
+            <span class="terms-text">I understand this site is not affiliated with Riot Games and my data is stored locally in this browser only.</span>
+        </label>
+
+        <button class="btn-submit" id="btn-register" type="button">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-loader"><span class="spinner"></span></span>
+        </button>
+
+        <div class="divider"></div>
+        <div class="auth-switch">Already have an account?&nbsp;<a href="./login.html">Sign in</a></div>
+    </div>
+</main>
+
+<footer>&nbsp;·&nbsp; Powered by Henrik Dev API &nbsp;·&nbsp;</footer>
+
+<script src="./js/navbar.js"></script>
+<script>
+    /* Toggle password */
+    const pwInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eye-icon');
+    document.getElementById('toggle-pw').addEventListener('click', () => {
+        const h = pwInput.type === 'password';
+        pwInput.type = h ? 'text' : 'password';
+        eyeIcon.className = h ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+    });
+
+    /* Strength */
+    const segs   = [1,2,3,4].map(i => document.getElementById(`s${i}`));
+    const strBar = document.getElementById('str-bar');
+    const strLbl = document.getElementById('str-lbl');
+    const COLORS = ['','#ff4655','#f5c518','#00d4ff','#3fa96a'];
+    const LABELS = ['','WEAK','FAIR','GOOD','STRONG'];
+    function calcStr(pw) {
+        let s=0;
+        if(pw.length>=8)s++; if(/[A-Z]/.test(pw))s++;
+        if(/[0-9]/.test(pw))s++; if(/[^A-Za-z0-9]/.test(pw))s++;
+        return s;
+    }
+    pwInput.addEventListener('input', () => {
+        const pw=pwInput.value;
+        if(!pw){strBar.style.display='none';strLbl.textContent='';return;}
+        strBar.style.display='flex';
+        const s=calcStr(pw);
+        segs.forEach((seg,i)=>{ seg.style.background=i<s?COLORS[s]:'var(--border-light)'; });
+        strLbl.textContent=LABELS[s]; strLbl.style.color=COLORS[s];
+        const fw=document.getElementById('fw-pw');
+        fw.classList.toggle('valid',s>=3); fw.classList.toggle('invalid',pw.length>0&&s<2);
+    });
+
+    /* Live validate */
+    function liveV(id,wid,fn){ const el=document.getElementById(id),fw=document.getElementById(wid); el.addEventListener('blur',()=>{ if(!el.value){fw.classList.remove('valid','invalid');return;} fw.classList.toggle('valid',fn(el.value)); fw.classList.toggle('invalid',!fn(el.value)); }); }
+    liveV('fname','fw-fname',v=>v.trim().length>=2);
+    liveV('lname','fw-lname',v=>v.trim().length>=2);
+    liveV('email','fw-email',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    liveV('confirm-pw','fw-cpw',v=>v===pwInput.value&&v.length>0);
+
+    /* Notify */
+    const notify=document.getElementById('notify');
+    function showNotify(type,msg){ notify.className=`notify ${type}`; notify.innerHTML=`<i class="fa-solid ${type==='error'?'fa-triangle-exclamation':'fa-circle-check'}"></i><span>${msg}</span>`; notify.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+
+    /* Register */
+    const btn=document.getElementById('btn-register');
+    function doRegister(){
+        const fname=document.getElementById('fname').value.trim();
+        const lname=document.getElementById('lname').value.trim();
+        const email=document.getElementById('email').value.trim().toLowerCase();
+        const riotId=document.getElementById('riot-id').value.trim();
+        const pw=pwInput.value;
+        const cpw=document.getElementById('confirm-pw').value;
+        const terms=document.getElementById('terms').checked;
+
+        if(!fname||!lname)                          { showNotify('error','Please enter your first and last name.'); return; }
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showNotify('error','Please enter a valid email address.'); return; }
+        if(calcStr(pw)<2)                            { showNotify('error','Password is too weak. Add uppercase letters or numbers.'); return; }
+        if(pw!==cpw)                                 { showNotify('error','Passwords do not match.'); return; }
+        if(!terms)                                   { showNotify('error','Please accept the disclaimer to continue.'); return; }
+
+        const accounts=JSON.parse(localStorage.getItem('vt_accounts')||'{}');
+        if(accounts[email]) { showNotify('error','An account with this email already exists.'); return; }
+
+        accounts[email]={ displayName:`${fname} ${lname}`, firstName:fname, lastName:lname, riotId, password:btoa(pw), createdAt:new Date().toISOString() };
+        localStorage.setItem('vt_accounts',JSON.stringify(accounts));
+
+        const session={ email, displayName:`${fname} ${lname}`, riotId, createdAt:accounts[email].createdAt };
+        localStorage.setItem('vt_session',JSON.stringify(session));
+
+        btn.classList.add('loading'); btn.disabled=true;
+        showNotify('success',`Account created! Welcome, ${fname}. Redirecting…`);
+        setTimeout(()=>{ window.location.href='./profile.html'; },900);
+    }
+    btn.addEventListener('click',doRegister);
+    document.querySelectorAll('input').forEach(el=>el.addEventListener('keydown',e=>{ if(e.key==='Enter')doRegister(); }));
+</script>
+</body>
+</html>

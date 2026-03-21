@@ -94,7 +94,7 @@ async function checkedMMRFetch(platform, region, name, tag) {
 async function getMatchHTML(region, name, tag) {
     try {
         // Fetch trực tiếp từ API v3
-        const res = await fetch(`https://api.henrikdev.xyz/valorant/v3/matches/${region}/${encodeURIComponent(name)}/${encodeURIComponent(tag)}?size=5`, {
+        const res = await fetch(`https://api.henrikdev.xyz/valorant/v3/matches/${region}/${encodeURIComponent(name)}/${encodeURIComponent(tag)}?size=7`, {
             headers: API_KEY !== 'YOUR_HENRIKDEV_API_KEY' ? { 'Authorization': API_KEY } : {}
         });
 
@@ -112,46 +112,53 @@ async function getMatchHTML(region, name, tag) {
         
         // Vòng lặp render UI
         for (const m of matches) {
-            const meta   = m.metadata || {};
-            const me = m.players?.all_players?.find(p =>
-                p.name?.toLowerCase() === name.toLowerCase() && p.tag?.toLowerCase() === tag.toLowerCase()
+          const meta = m.metadata || {};
+          const me =
+            m.players?.all_players?.find(
+              (p) =>
+                p.name?.toLowerCase() === name.toLowerCase() &&
+                p.tag?.toLowerCase() === tag.toLowerCase(),
             ) || {};
-            
-            const stats  = me.stats || {};
-            const k = stats.kills ?? '?'; 
-            const d = stats.deaths ?? '?'; 
-            const a = stats.assists ?? '?';
-            
-            const agentName = me.character || '?';
-            const agentIcon = me.assets?.agent?.small || '';
-            const mode = meta.mode || '?';
-            const map  = meta.map  || '?';
 
-            // Determine win/loss
-            const team = me.team?.toLowerCase();
-            const blueWon = m.teams?.blue?.has_won;
-            const redWon  = m.teams?.red?.has_won;
-            let result = 'draw';
-            
-            if (team === 'blue' && blueWon) result = 'win';
-            else if (team === 'red'  && redWon)  result = 'win';
-            else if (team !== undefined) result = 'loss';
+          const stats = me.stats || {};
+          const k = stats.kills ?? "?";
+          const d = stats.deaths ?? "?";
+          const a = stats.assists ?? "?";
 
-            const blueScore = m.teams?.blue?.rounds_won ?? '';
-            const redScore  = m.teams?.red?.rounds_won  ?? '';
-            const scoreStr  = blueScore !== '' ? `${blueScore} — ${redScore}` : '';
+          const agentName = me.character || "?";
+          const agentIcon = me.assets?.agent?.small || "";
+          const mode = meta.mode || "?";
+          const map = meta.map || "?";
 
-            // ĐÃ THÊM: style="margin-bottom: 12px;" để tạo khoảng cách giữa các trận
-            matchHTML += `
-            <div class="match-row ${result}" style="margin-bottom: 12px;">
+          // Determine win/loss
+          const team = me.team?.toLowerCase();
+          const blueWon = m.teams?.blue?.has_won;
+          const redWon = m.teams?.red?.has_won;
+          let result = "draw";
+
+          if (team === "blue" && blueWon) result = "win";
+          else if (team === "red" && redWon) result = "win";
+          else if (team !== undefined) result = "loss";
+
+          const blueScore = m.teams?.blue?.rounds_won ?? "";
+          const redScore = m.teams?.red?.rounds_won ?? "";
+          const scoreStr = blueScore !== "" ? `${blueScore} — ${redScore}` : "";
+
+          const { region, puuid } = await checkedAccountFetch(name, tag);
+          // ĐÃ THÊM: style="margin-bottom: 12px;" để tạo khoảng cách giữa các trận
+          matchHTML += `
+            <div class="match-row ${result}" style="margin-bottom:12px; cursor:pointer;"
+  onclick="location.href='./match.html?region=${region}&matchid=${meta.matchid}&mipuuid=${puuid}'">
                 <div class="match-mode">
                     <span class="mode-name">${mode}</span>
                     <span class="mode-map">${map}</span>
                 </div>
                 <div class="match-agent">
-                    ${agentIcon
+                    ${
+                      agentIcon
                         ? `<img src="${agentIcon}" class="agent-icon" alt="${agentName}">`
-                        : `<div class="agent-icon">${agentName[0]||'?'}</div>`}
+                        : `<div class="agent-icon">${agentName[0] || "?"}</div>`
+                    }
                     <span class="match-agent-name">${agentName}</span>
                 </div>
                 <div class="match-kda">
@@ -160,7 +167,7 @@ async function getMatchHTML(region, name, tag) {
                 </div>
                 <div class="match-result">
                     <span class="result-badge">${result.toUpperCase()}</span>
-                    ${scoreStr ? `<div class="match-score">${scoreStr}</div>` : ''}
+                    ${scoreStr ? `<div class="match-score">${scoreStr}</div>` : ""}
                 </div>
             </div>`;
         }
