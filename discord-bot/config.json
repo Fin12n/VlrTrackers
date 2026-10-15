@@ -1,0 +1,20 @@
+{
+  "prefix": "!",
+  "colors": {
+    "primary": 16401492,
+    "secondary": 989475,
+    "accent": 62932,
+    "success": 3066993,
+    "warning": 15844367,
+    "error": 15158332
+  },
+  "cache": {
+    "accountTtlSeconds": 600,
+    "matchTtlSeconds": 3600
+  },
+  "gemini": {
+    "defaultModel": "gemini-2.5-pro",
+    "thinkingBudget": 2048
+  },
+  "trackerUrl": "https://tracker.gg/valorant/profile/riot"
+}

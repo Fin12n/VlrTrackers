@@ -1,0 +1,40 @@
+{
+  "name": "valorant-checkers-bot",
+  "version": "1.0.0",
+  "description": "Discord Bot checking Valorant accounts and match analysis using Components V2, Drizzle ORM, and Gemini Live AI",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "deploy": "tsx src/deploy-commands.ts",
+    "build": "tsc",
+    "test:ui": "tsx test/test-ui.ts",
+    "test:db": "tsx test/test-db.ts",
+    "test:all": "tsx test/test-ui.ts && tsx test/test-db.ts"
+  },
+  "keywords": [
+    "discord-bot",
+    "valorant",
+    "components-v2",
+    "drizzle-orm",
+    "gemini-ai",
+    "typescript"
+  ],
+  "author": "Mien Tay Teu",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "dev",
+    "@google/genai": "^2.29.1",
+    "discord.js": "dev",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.45.4",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
+    "typescript": "^5.8.2"
+  }
+}
